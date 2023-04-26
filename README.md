@@ -1,5 +1,5 @@
-#Simple text adventure
+# Simple text adventure
 
-##Written in JavaScript
+## Written in JavaScript
 
-##[You can find it here](https://dudeldups.github.io/simple-text-adventure)
+## [You can find it here](https://dudeldups.github.io/simple-text-adventure)
