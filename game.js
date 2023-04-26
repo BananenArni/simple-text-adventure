@@ -30,7 +30,7 @@ async function typeWriter(text) {
         } else {
             textElement.innerHTML += letter;
         }
-        await sleep(10);
+        await sleep(40);
     }
     await sleep(250);
     textElement.innerHTML += "</p>";
