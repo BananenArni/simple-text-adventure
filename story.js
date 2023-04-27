@@ -17,7 +17,7 @@ const story = {
             },
             {
                 optionText: "Go on",
-                destination: "beach"
+                destination: "corridor"
             },
         ]
     },
@@ -35,13 +35,6 @@ const story = {
             },
         ]
     },
-    beach: {
-        displayText: `This
-
-is a 
-
-test.`,
-    },
     statue: {
         displayText: `You approach the ancient statue, fascinated by the ornate key it's holding, but as you reach out to grab it, the ground beneath your feet suddenly crumbles. You fall down a deep hole and land on the ground with a loud thud, twisting your ankle painfully in the process.
 
@@ -49,7 +42,15 @@ test.`,
         options: [
             {
                 optionText: "Try out the key to open the door",
-                destination: "corridor"
+                destination: "start"
+            },
+            {
+                optionText: "Try out the key to open the door",
+                destination: "start"
+            },
+            {
+                optionText: "Try out the key to open the door and then get the hell out",
+                destination: "start"
             },
         ]
     },

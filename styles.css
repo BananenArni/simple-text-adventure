@@ -24,10 +24,11 @@ body, main {
     width: 800px;
     max-width: 90%;
     height: auto;
+    max-height: 1500px;
     background-color: white;
     border-radius: 5px;
     box-shadow: 0 0 10px 2px;
-    transition: 1s;
+    transition: all 1s ease-out, height 2s;
 }
 
 p {
@@ -52,17 +53,50 @@ p {
     background-color: #0A5F5C;
     border: 1px solid hsl(755, 100%, 20%);
     box-shadow: 1px 2px 2px 1px #888888;
-    width: auto;
+    width: 300px;
+    max-height: 75px;
     border-radius: 5px;
     padding: 6px 10px;
     color: white;
     outline: none;
-    transition: 0.7s;
+    transition: 1s;
 }
 
 .btn:hover {
     box-shadow: 1px 2px 6px 2px #888888;
     background-color: #096b68;
+}
+
+.btn:active {
+    transition: 0.08s ease-out;
+    transform: scaleY(0.92);
+}
+
+.fadeIn {
+    animation: fadeIn 1s ease-out;
+}
+
+.fadeOut {
+    animation: fadeOut 1s ease-out;
+}
+
+.unfold {
+    animation: unfold 1.5s;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes fadeOut {
+    from { opacity: 1; }
+    to { opacity: 0; }
+}
+
+@keyframes unfold {
+    from { height: 0px }
+    to { height: max-content }
 }
 
 @media only screen and (min-width: 480px) {
