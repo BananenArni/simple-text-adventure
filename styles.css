@@ -81,7 +81,7 @@ p {
 }
 
 .unfold {
-    animation: unfold 1.5s;
+    animation: unfold 1s ease-out;
 }
 
 @keyframes fadeIn {
@@ -96,7 +96,7 @@ p {
 
 @keyframes unfold {
     from { height: 0px }
-    to { height: max-content }
+    to { height: 38px }
 }
 
 @media only screen and (min-width: 480px) {

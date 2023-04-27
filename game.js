@@ -42,7 +42,7 @@ function createButtons(options) {
     let buttons = [];
     for (let i = 0; i < options.length; i++) {
         const button = document.createElement('button');
-        button.classList.add('btn', 'unfold');
+        button.classList.add('btn');
         let newScene = options[i].destination;
         button.addEventListener('click', () => gameManager(newScene));
         buttons.push(button);
@@ -54,9 +54,10 @@ async function showButtons(options) {
     const buttons = createButtons(options);
     for (let i = 0; i < buttons.length; i++) {
         const button = buttons[i];
-        button.innerText = options[i].optionText;
+        button.classList.add('unfold');
         optionButtonsElement.appendChild(button);
         await fadeIn(button);
+        button.innerText = options[i].optionText;
     }
 }
 
@@ -65,17 +66,17 @@ function expandButton(button) {
 }
 
 async function fadeIn(element) {
-    //if (element.classList.contains('fadeOut')) {
+    if (element.classList.contains('fadeOut')) {
         element.classList.remove('fadeOut');
-    //}
+    }
     element.classList.add('fadeIn');
-    await sleep(950);
+    await sleep(900);
 }
 
 async function fadeOut(element) {
-    //if (element.classList.contains('fadeIn')) {
+    if (element.classList.contains('fadeIn')) {
         element.classList.remove('fadeOut');
-    //}
+    }
     element.classList.add('fadeOut');
     await sleep(950);
 }
