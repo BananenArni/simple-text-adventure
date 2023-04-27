@@ -4,19 +4,22 @@ const containerElement = document.getElementById('container');
 const textElement = document.getElementById('text');
 const optionButtonsElement = document.getElementById('btn-grid');
 
+let multi = 1; //multiplicator for faster text
+
 let inventory = [];
 
-restartGame();
+gameManager('intro');
 
 
 async function gameManager(scene) {
-    await fadeOut(containerElement);
+    if (scene !== 'intro') await fadeOut(containerElement);
     textElement.innerHTML = "";
     optionButtonsElement.innerHTML = "";
+    const options = story[scene].options;
+    const buttons = await createButtons(options);
     await fadeIn(containerElement);
-    const options = story[scene].options || 'restart';
     await typeWriter(story[scene].displayText);
-    await showButtons(options);
+    await showButtons(buttons, options);
 }
 
 async function typeWriter(text) {
@@ -32,51 +35,60 @@ async function typeWriter(text) {
         }
         await sleep(40);
     }
-    await sleep(250);
+    await sleep(500);
     textElement.innerHTML += "</p>";
 }
 
-function createButtons(options) {
+async function createButtons(options) {
     let buttons = [];
-    if (options !== 'restart') {
-        for (let i = 0; i < options.length; i++) {
-            const button = document.createElement('button');
-            buttons.push(button);
-            button.innerText = options[i].optionText;
-            button.classList.add('btn');
-            let newScene = options[i].destination;
-            button.addEventListener('click', () => gameManager(newScene));
-            button.style.opacity = 0;
-            optionButtonsElement.appendChild(button);
-        }
-    } else {
+    for (let i = 0; i < options.length; i++) {
         const button = document.createElement('button');
-        buttons.push(button);
-        button.innerText = "Restart";
         button.classList.add('btn');
-        button.addEventListener('click', () => restartGame());
         button.style.opacity = 0;
+        button.style.height, button.style.padding = "0px";
         optionButtonsElement.appendChild(button);
+        let newScene = options[i].destination;
+        button.addEventListener('click', () => gameManager(newScene));
+        buttons.push(button);
     }
     return buttons;
 }
 
-async function showButtons(options) {
-    let buttons = createButtons(options);
+async function showButtons(buttons, options) {
     for (let i = 0; i < buttons.length; i++) {
-        await sleep(500);
-        await fadeIn(buttons[i]);
+        const button = buttons[i];
+        await expandButton(button);
+        button.innerText = options[i].optionText;
+        await fadeIn(button);
     }
 }
 
-async function fadeIn(element) {
+function expandButton(button) {
+    return new Promise (resolve => {
+        let h, p = 0;
+        while (h < 38) {
+            h += 1;
+            button.style.height = `${h}px`;
+        }
+        button.style.height = "auto";
+        while (p < 6) {
+            p+= 1;
+            button.style.padding = `${p}px 10px`;
+        }
+        resolve();
+    });
+}
+
+function fadeIn(element) {
     if (!element) return
-    let opc = 0;
-    while (opc < 1) {
-        opc += 0.01;
-        element.style.opacity = opc;
-    }
-    await sleep(250);
+    return new Promise (resolve => {
+        let opc = 0;
+        while (opc < 1) {
+            opc += 0.01;
+            element.style.opacity = opc;
+        }
+        resolve();
+    });
 }
 
 async function fadeOut(element) {
@@ -89,11 +101,6 @@ async function fadeOut(element) {
     await sleep(750);
 }
 
-async function sleep(time) {
-    await new Promise (t => setTimeout(t, time));
-}
-
-function restartGame() {
-    inventory = [];
-    gameManager('start');
+function sleep(time) {
+    return new Promise (r => setTimeout(r, time));
 }
