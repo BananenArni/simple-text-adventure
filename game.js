@@ -8,17 +8,27 @@ let multi = 1; //multiplicator for faster text
 
 let inventory = [];
 
-gameManager('intro');
+startGame();
 
+
+async function startGame() {
+    containerElement.style.opacity = 0;
+    const options = story['intro'].options;
+    const buttons = createButtons(options);
+    await fadeIn(containerElement); //no await to make it look more dynamic
+    await typeWriter(story['intro'].displayText);
+    await showButtons(buttons, options);
+}
 
 async function gameManager(scene) {
-    if (scene !== 'intro') await fadeOut(containerElement);
+    await fadeOut(containerElement);
     textElement.innerHTML = "";
     optionButtonsElement.innerHTML = "";
     const options = story[scene].options;
-    fadeIn(containerElement);
+    const buttons = createButtons(options);
+    await fadeIn(containerElement); //no await to make it look more dynamic
     await typeWriter(story[scene].displayText);
-    await showButtons(options);
+    await showButtons(buttons, options);
 }
 
 async function typeWriter(text) {
@@ -42,37 +52,42 @@ function createButtons(options) {
     let buttons = [];
     for (let i = 0; i < options.length; i++) {
         const button = document.createElement('button');
-        button.classList.add('btn');
+        button.classList.add('btn', 'hidden');
         let newScene = options[i].destination;
         button.addEventListener('click', () => {
             gameManager(newScene);
         }, { once: true });
+        optionButtonsElement.appendChild(button);
         buttons.push(button);
     }
     return buttons;
 }
 
-async function showButtons(options) {
-    const buttons = createButtons(options);
+async function showButtons(buttons, options) {
     for (let i = 0; i < buttons.length; i++) {
         const button = buttons[i];
-        button.classList.add('unfold');
-        optionButtonsElement.appendChild(button);
-        await fadeIn(button);
+        await expandButton(button);
         button.innerText = options[i].optionText;
+        await fadeIn(button);
     }
 }
 
 function expandButton(button) {
-    
+    return new Promise(res => {
+        button.classList.add('unfold');
+        button.addEventListener('animationend', () => {
+            button.classList.add('unfolded');
+            button.classList.remove('unfold', 'hidden');
+            res();
+    }, { once: true });
+    });
 }
 
 function fadeIn(element) {
-    if (element.classList.contains('fadeOut')) {
-        element.classList.remove('fadeOut');
-    }
     return new Promise(res => {
         element.addEventListener('animationend', () => {
+            element.classList.remove('fadeIn');
+            element.style.opacity = 1;
             res();
         }, { once: true });
         element.classList.add('fadeIn');
@@ -80,11 +95,9 @@ function fadeIn(element) {
 }
 
 function fadeOut(element) {
-    if (element.classList.contains('fadeIn')) {
-        element.classList.remove('fadeIn');
-    }
     return new Promise(res => {
         element.addEventListener('animationend', () => {
+            element.classList.remove('fadeOut');
             res();
         }, { once: true });
         element.classList.add('fadeOut');

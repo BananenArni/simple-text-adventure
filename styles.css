@@ -28,7 +28,7 @@ body, main {
     background-color: white;
     border-radius: 5px;
     box-shadow: 0 0 10px 2px;
-    transition: all 1s ease-out, height 2s;
+    transition: 1s ease-out;
 }
 
 p {
@@ -38,6 +38,7 @@ p {
 
 #text {
     width: 100%;
+    min-height: 1.35rem;
 }
 
 #btn-grid {
@@ -54,7 +55,6 @@ p {
     border: 1px solid hsl(755, 100%, 20%);
     box-shadow: 1px 2px 2px 1px #888888;
     width: 300px;
-    max-height: 75px;
     border-radius: 5px;
     padding: 6px 10px;
     color: white;
@@ -81,7 +81,13 @@ p {
 }
 
 .unfold {
-    animation: unfold 1s ease-out;
+    animation: unfold 0.5s ease-out;
+}
+
+.hidden {
+    padding: 0px;
+    height: 0px;
+    opacity: 0;
 }
 
 @keyframes fadeIn {
@@ -95,8 +101,8 @@ p {
 }
 
 @keyframes unfold {
-    from { height: 0px }
-    to { height: 38px }
+    from { height: 0px; padding: 0px 10px; }
+    to { height: 26px; padding: 6px 10px; }
 }
 
 @media only screen and (min-width: 480px) {
