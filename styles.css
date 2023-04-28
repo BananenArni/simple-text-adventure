@@ -31,14 +31,11 @@ body, main {
     transition: 1s ease-out;
 }
 
-p {
-    margin: 0;
-    padding: 0;
-}
-
 #text {
     width: 100%;
-    min-height: 1.35rem;
+    margin: 0;
+    padding: 0;
+    min-height: 1.5rem;
 }
 
 #btn-grid {
@@ -81,7 +78,7 @@ p {
 }
 
 .unfold {
-    animation: unfold 0.5s ease-out;
+    animation: unfold 0.35s ease-out;
 }
 
 .hidden {

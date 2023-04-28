@@ -4,36 +4,26 @@ const containerElement = document.getElementById('container');
 const textElement = document.getElementById('text');
 const optionButtonsElement = document.getElementById('btn-grid');
 
-let multi = 1; //multiplicator for faster text
-
 let inventory = [];
 
-startGame();
+gameManager('intro');
 
-
-async function startGame() {
-    containerElement.style.opacity = 0;
-    const options = story['intro'].options;
-    const buttons = createButtons(options);
-    await fadeIn(containerElement); //no await to make it look more dynamic
-    await typeWriter(story['intro'].displayText);
-    await showButtons(buttons, options);
-}
 
 async function gameManager(scene) {
-    await fadeOut(containerElement);
-    textElement.innerHTML = "";
-    optionButtonsElement.innerHTML = "";
+    if (scene !== 'intro') {
+        await fadeOut(containerElement);
+        textElement.innerHTML = "";
+        optionButtonsElement.innerHTML = "";
+    }
     const options = story[scene].options;
     const buttons = createButtons(options);
-    await fadeIn(containerElement); //no await to make it look more dynamic
+    fadeIn(containerElement); //no await to make it look more dynamic
     await typeWriter(story[scene].displayText);
     await showButtons(buttons, options);
 }
 
 async function typeWriter(text) {
     let textArr = text.split('');
-    textElement.innerHTML = "<p>";
     while (textArr.length) {
         let letter = textArr.shift();
         if (letter === "\n") {
@@ -45,7 +35,10 @@ async function typeWriter(text) {
         await sleep(40);
     }
     await sleep(500);
-    textElement.innerHTML += "</p>";
+}
+
+function sleep(time) {
+    return new Promise (r => setTimeout(r, time));
 }
 
 function createButtons(options) {
@@ -102,8 +95,4 @@ function fadeOut(element) {
         }, { once: true });
         element.classList.add('fadeOut');
     });
-}
-
-function sleep(time) {
-    return new Promise (r => setTimeout(r, time));
 }
