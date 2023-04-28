@@ -44,7 +44,9 @@ function createButtons(options) {
         const button = document.createElement('button');
         button.classList.add('btn');
         let newScene = options[i].destination;
-        button.addEventListener('click', () => gameManager(newScene));
+        button.addEventListener('click', () => {
+            gameManager(newScene);
+        }, { once: true });
         buttons.push(button);
     }
     return buttons;
@@ -65,20 +67,28 @@ function expandButton(button) {
     
 }
 
-async function fadeIn(element) {
+function fadeIn(element) {
     if (element.classList.contains('fadeOut')) {
         element.classList.remove('fadeOut');
     }
-    element.classList.add('fadeIn');
-    await sleep(900);
+    return new Promise(res => {
+        element.addEventListener('animationend', () => {
+            res();
+        }, { once: true });
+        element.classList.add('fadeIn');
+    });
 }
 
-async function fadeOut(element) {
+function fadeOut(element) {
     if (element.classList.contains('fadeIn')) {
-        element.classList.remove('fadeOut');
+        element.classList.remove('fadeIn');
     }
-    element.classList.add('fadeOut');
-    await sleep(950);
+    return new Promise(res => {
+        element.addEventListener('animationend', () => {
+            res();
+        }, { once: true });
+        element.classList.add('fadeOut');
+    });
 }
 
 function sleep(time) {
