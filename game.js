@@ -1,20 +1,50 @@
 import story from "./story.js";
 
-const containerElement = document.getElementById('container');
+const containerElement = document.getElementById('main-container');
 const textElement = document.getElementById('text');
-const optionButtonsElement = document.getElementById('btn-grid');
+const optionsElement = document.getElementById('options');
+const slowButton = document.getElementById('slow');
+const fastButton = document.getElementById('fast');
+const choiceButtonsElement = document.getElementById('btn-grid');
 
-let inventory = [];
+slowButton.addEventListener('click', () => toggleSpeedButtons('slow'));
+fastButton.addEventListener('click', () => toggleSpeedButtons('fast'));
 
-gameManager('intro');
+let textSpeed = 1; 
 
+startGame();
+
+
+async function startGame() {
+    const startButton = document.createElement('button');
+    startButton.classList.add('btn');
+    startButton.innerText = "Let's start!";
+    startButton.addEventListener('click', async () => {
+        await fadeOut(containerElement);
+        optionsElement.style.visibility = 'visible';
+        textElement.style.textAlign = 'left';
+        gameManager('start');
+    }, { once: true });
+    choiceButtonsElement.appendChild(startButton);
+    textElement.innerHTML = story['intro'].displayText;
+    await fadeIn(containerElement);
+}
+
+function toggleSpeedButtons(speed) {
+    if (speed === 'fast') {
+        slowButton.classList.remove('option-btn-active');
+        fastButton.classList.add('option-btn-active');
+        textSpeed = 4;
+    } else {
+        fastButton.classList.remove('option-btn-active');
+        slowButton.classList.add('option-btn-active');
+        textSpeed = 1;
+    }
+}
 
 async function gameManager(scene) {
-    if (scene !== 'intro') {
-        await fadeOut(containerElement);
-        textElement.innerHTML = "";
-        optionButtonsElement.innerHTML = "";
-    }
+    textElement.innerHTML = "";
+    choiceButtonsElement.innerHTML = "";
     const options = story[scene].options;
     const buttons = createButtons(options);
     fadeIn(containerElement); //no await to make it look more dynamic
@@ -28,11 +58,13 @@ async function typeWriter(text) {
         let letter = textArr.shift();
         if (letter === "\n") {
             await sleep(300);
-            textElement.innerHTML += "<br><br>";
+            textElement.innerHTML += "<br>";
+            await sleep(300);
+            textElement.innerHTML += "<br>";
         } else {
             textElement.innerHTML += letter;
         }
-        await sleep(40);
+        await sleep(40/textSpeed);
     }
     await sleep(500);
 }
@@ -47,10 +79,11 @@ function createButtons(options) {
         const button = document.createElement('button');
         button.classList.add('btn', 'hidden');
         let newScene = options[i].destination;
-        button.addEventListener('click', () => {
+        button.addEventListener('click', async () => {
+            await fadeOut(containerElement);
             gameManager(newScene);
         }, { once: true });
-        optionButtonsElement.appendChild(button);
+        choiceButtonsElement.appendChild(button);
         buttons.push(button);
     }
     return buttons;

@@ -4,15 +4,51 @@
     font-size: 1.08rem;
 }
 
-body, main {
+body, main, #main-container {
     padding: 0;
     margin: 0;
     display: flex; 
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     width: 100vw;
     height: 100vh; 
     background-color: #333;
+}
+
+#main-container {
+    width: auto;
+    max-width: 700px;
+    margin: 10px;
+}
+
+#button-description {
+    font-size: 0.9rem;
+    color: white;
+}
+
+#options {
+    margin-bottom: 8px;
+    margin-left: auto;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    visibility: hidden;
+}
+
+.option-btn {
+    font-size: 0.9rem;
+    color: black;
+    background-color: #F9F871;
+    border: 1px solid black;
+    border-radius: 7px;
+    width: 60px;
+}
+
+.option-btn-active {
+    background-color: #B5DE71;
+    font-weight: bold;
 }
 
 #container {
@@ -21,8 +57,8 @@ body, main {
     justify-content: center;
     align-items: center;
     padding: 10px;
-    width: 800px;
-    max-width: 90%;
+    width: auto;
+    max-width: inherit;
     height: auto;
     max-height: 1500px;
     background-color: white;
@@ -36,6 +72,7 @@ body, main {
     margin: 0;
     padding: 0;
     min-height: 1.5rem;
+    text-align: center;
 }
 
 #btn-grid {
@@ -48,7 +85,7 @@ body, main {
 }
 
 .btn {
-    background-color: #0A5F5C;
+    background-color: #674687;
     border: 1px solid hsl(755, 100%, 20%);
     box-shadow: 1px 2px 2px 1px #888888;
     width: 300px;
@@ -61,7 +98,7 @@ body, main {
 
 .btn:hover {
     box-shadow: 1px 2px 6px 2px #888888;
-    background-color: #096b68;
+    background-color: #735492;
 }
 
 .btn:active {
@@ -84,7 +121,7 @@ body, main {
 .hidden {
     padding: 0px;
     height: 0px;
-    opacity: 0;
+    visibility: hidden;
 }
 
 @keyframes fadeIn {
